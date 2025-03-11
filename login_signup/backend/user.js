@@ -102,7 +102,70 @@ userRouter.post("/signup",signupHandler);
 
 userRouter.post("/login",loginHandler);
 
+userRouter.get("/profile", async (req, res) => {
+    try {
+        const token = req.headers.authorization?.split(" ")[1];
 
+        if (!token) {
+            return res.status(401).json({ message: "Unauthorized" });
+        }
+
+        const decoded = JWT.verify(token, JWT_USER_SEC);
+        const user = await userModel.findById(decoded._id).select("-password"); // Exclude password
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching profile" });
+    }
+});
+userRouter.put("/update-profile", async (req, res) => {
+    try {
+        const token = req.headers.authorization?.split(" ")[1];
+
+        if (!token) {
+            return res.status(401).json({ message: "Unauthorized" });
+        }
+
+        const decoded = JWT.verify(token, JWT_USER_SEC);
+        const { name, email } = req.body;
+
+        const updatedUser = await userModel.findByIdAndUpdate(
+            decoded._id,
+            { name, email },
+            { new: true, runValidators: true }
+        );
+
+        res.json({ message: "Profile updated successfully", user: updatedUser });
+    } catch (error) {
+        res.status(500).json({ message: "Error updating profile" });
+    }
+});
+userRouter.post("/save-analysis", async (req, res) => {
+    try {
+        const token = req.headers.authorization?.split(" ")[1];
+
+        if (!token) {
+            return res.status(401).json({ message: "Unauthorized" });
+        }
+
+        const decoded = JWT.verify(token, JWT_USER_SEC);
+        const { emotions } = req.body;
+
+        await userModel.findByIdAndUpdate(
+            decoded._id,
+            { $push: { analysisHistory: { emotions } } },
+            { new: true }
+        );
+
+        res.json({ message: "Analysis saved successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Error saving analysis" });
+    }
+});
 
 module.exports = {
     userRouter

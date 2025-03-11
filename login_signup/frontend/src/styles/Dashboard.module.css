@@ -247,4 +247,54 @@
   .analysisPanel {
     padding: 1rem;
   }
+  
+
+}
+.buttonContainer {
+  display: flex;
+  gap: 15px; /* Space between Account & Logout buttons */
+}
+
+.accountButton {
+  position: relative;
+  padding: 0.8rem 1.5rem;
+  background: linear-gradient(135deg, #667eea, #8a6bec);
+  border: none;
+  border-radius: 30px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.accountButton:hover {
+  background: linear-gradient(135deg, #5ab9ea, #667eea);
+  transform: scale(1.05);
+}
+.uploadButton {
+  display: block;
+  margin: 20px auto; /* Centers the button */
+  padding: 10px 30px; /* Adjusts padding for better shape */
+  width: fit-content; /* Prevents full width */
+  background: linear-gradient(135deg, #667eea, #8a6bec);
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.uploadButton:hover {
+  background: linear-gradient(135deg, #5ab9ea, #667eea);
+  transform: scale(1.05);
+}
+
+
+.hiddenInput {
+  display: none;
 }

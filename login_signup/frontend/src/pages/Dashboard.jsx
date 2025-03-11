@@ -7,8 +7,20 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Clears JWT token
+    localStorage.removeItem("token");
     navigate("/");
+  };
+
+  const handleAccount = () => {
+    navigate("/Account");
+  };
+
+  const handleUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      console.log("Selected file:", file.name);
+      // You can handle file upload logic here
+    }
   };
 
   return (
@@ -35,7 +47,7 @@ const Dashboard = () => {
         ))}
       </div>
 
-      {/* Header with Logout */}
+      {/* Header */}
       <motion.header
         className={styles.header}
         initial={{ y: -100 }}
@@ -47,15 +59,25 @@ const Dashboard = () => {
           <span className={styles.vision}>Vision</span>
         </div>
 
-        <motion.button
-          className={styles.logoutButton}
-          onClick={handleLogout}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          Logout
-          <div className={styles.buttonGlow} />
-        </motion.button>
+        <div className={styles.buttonContainer}>
+          <motion.button
+            className={styles.accountButton}
+            onClick={handleAccount}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Account
+          </motion.button>
+
+          <motion.button
+            className={styles.logoutButton}
+            onClick={handleLogout}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Logout
+          </motion.button>
+        </div>
       </motion.header>
 
       {/* Camera Section */}
@@ -72,10 +94,22 @@ const Dashboard = () => {
             audio={false}
             screenshotFormat="image/jpeg"
             videoConstraints={{
-              width: 640,
-              height: 480,
+              width: 400, // Reduced size
+              height: 300,
               facingMode: "user",
             }}
+          />
+
+          {/* Upload Button */}
+          <label htmlFor="upload-input" className={styles.uploadButton}>
+            Upload Image for Analysis
+          </label>
+          <input
+            id="upload-input"
+            type="file"
+            accept="image/*"
+            onChange={handleUpload}
+            className={styles.hiddenInput}
           />
         </motion.div>
       </main>
